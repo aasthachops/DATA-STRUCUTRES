@@ -1,0 +1,114 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+class Aastha{
+    public:
+        string name;
+        int age;
+        Aastha* prev;
+        Aastha* next;
+        Aastha (string str,int a){
+            name = str;
+            age = a;
+        }
+};
+
+bool searchName(Vaibhav* head,string name){
+    Aastha* curr = head;
+    while(curr != NULL){
+        if(curr->name == name) return true;
+        curr = curr->next;
+    }
+    return false;
+}
+
+bool searchAge(Aastha* head,int age){
+  Aastha* curr = head;
+    while(curr != NULL){
+        if(curr->age == age) return true;
+        curr = curr->next;
+    }
+    return false;
+}
+
+void insertAtHead(Aastha* & head,Aastha*& tail,string str,int age){
+    Aastha* newNode = new Aastha(str,age);
+    newNode->next = head;
+    if(head != NULL) head->prev = newNode;
+    
+    head = newNode;
+}
+
+void insertAtTail(Aastha* & head,Aastha*& tail,string str,int age){
+    Aastha* newNode = new Aastha(str,age);
+    newNode->next = NULL;
+    if(head == NULL){
+        newNode->prev = NULL;
+        head = newNode;
+        tail = newNode;
+        return;
+    }
+    tail->next = newNode;
+    newNode->prev = tail;
+    tail = newNode;
+    return;
+}
+void deleteNode(Aastha* & head,Aastha*& curr){
+    if(head == NULL || curr == NULL) return;
+    if(head == curr) head->next = curr->next;
+    if(curr->next != NULL) curr->next->prev = curr->prev;
+    if(curr->prev != NULL) curr->prev->next = curr->next;
+    free(curr);
+}
+
+void deleteNodeAtGivenPosition(Aastha*& head, int n){
+    if(head == NULL || n <= 0) return;
+    Aastha* curr = head;
+    int i;
+    for(int i = 1;curr != NULL && i < n;++i) curr = curr->next;
+    if(curr == NULL) return;
+    deleteNode(head,curr);
+}
+
+void deleteNodeFromEnd(Aastha*& tail){
+    if(tail == NULL) return;
+    Aastha* curr = tail->prev;
+    tail->prev->next = NULL;
+    tail = curr;
+}
+void display(Aastha* head){
+    Aastha* curr = head;
+    while(curr != NULL) {
+        cout << curr->name << ": " << curr->age << endl;
+        curr = curr->next;
+    }
+    
+}
+
+void displayInReverse(Aastha* tail){
+   Aastha* curr = tail;
+    while(curr != NULL){
+        cout << curr->name << ": " << curr->age << endl;
+        curr = curr->prev;
+    }
+}
+
+int main() {
+	Aastha* head = NULL;
+	Aastha* tail = head;
+	insertAtTail(head,tail,"Grandmother",26);
+	insertAtHead(head,tail,"grandfather",38);
+	insertAtHead(head,tail,"grandfather",38);
+	deleteNodeAtGivenPosition(head,2);
+	
+	display(head);
+	cout<< "Display in Reverse" << endl;
+	displayInReverse(tail);
+	
+	
+	if(searchAge(head,18)) cout << "The age is present in the List." << endl;
+	
+	if(searchName(head,"Father")) cout << "The Name is present in the List." << endl;
+	
+	return 0;
+}
