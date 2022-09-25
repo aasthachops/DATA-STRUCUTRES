@@ -13,7 +13,7 @@ class Aastha{
         }
 };
 
-bool searchName(Vaibhav* head,string name){
+bool searchName(Aastha* head,string name){
     Aastha* curr = head;
     while(curr != NULL){
         if(curr->name == name) return true;
